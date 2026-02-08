@@ -32,6 +32,6 @@ If you prefer not to install the desktop version, you may use the **web-based ve
 For questions, feedback, or academic inquiries, please contact:
 **corbas2026@gmail.com**
 
-**Author:**  
+**Owner:**  
 Muhammad Hussein Mahdi Mohsen  
 University of Basra
