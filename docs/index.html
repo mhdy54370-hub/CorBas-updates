@@ -1,19 +1,1006 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>CorBas — Updates & Changelog</title>
-  <meta name="description" content="Updates, release notes and changelog for CorBas." />
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="description" content="CorBas — A desktop corpus analysis application for researchers, linguists, and students at the University of Basra."/>
+<title>CorBas — Corpus Analysis Tool</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,500&family=Source+Serif+4:ital,wght@0,300;0,400;1,300&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet"/>
+
+<style>
+:root {
+  --ink:       #1c1712;
+  --parchment: #f5eddc;
+  --warm-mid:  #2e2519;
+  --gold:      #c8922a;
+  --gold-light:#e8b84b;
+  --rust:      #8b3a2a;
+  --cream:     #f0e6cc;
+  --muted:     #8a7a62;
+  --line:      rgba(200,146,42,0.22);
+  --glass:     rgba(255,240,210,0.04);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background-color: var(--ink);
+  color: var(--cream);
+  font-family: 'Source Serif 4', Georgia, serif;
+  font-weight: 300;
+  line-height: 1.75;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── BACKGROUND TEXTURE ─────────────────────────────────── */
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 0;
+  background:
+    radial-gradient(ellipse 80% 60% at 20% 10%, rgba(200,146,42,0.07) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 80% at 85% 80%, rgba(139,58,42,0.06) 0%, transparent 60%),
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 59px,
+      rgba(200,146,42,0.035) 60px
+    );
+  pointer-events: none;
+}
+
+/* ── NAV ─────────────────────────────────────────────────── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 2.5rem;
+  height: 62px;
+  background: rgba(28,23,18,0.88);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--line);
+}
+
+.nav-brand {
+  display: flex; align-items: center; gap: 0.75rem;
+  text-decoration: none;
+}
+
+.nav-logo {
+  width: 32px; height: 32px;
+  background: var(--gold);
+  border-radius: 6px;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 600;
+  font-size: 0.75rem;
+  color: var(--ink);
+  letter-spacing: -0.5px;
+  flex-shrink: 0;
+}
+
+.nav-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: var(--parchment);
+  letter-spacing: 0.02em;
+}
+
+.nav-version {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.68rem;
+  color: var(--gold);
+  background: rgba(200,146,42,0.12);
+  border: 1px solid rgba(200,146,42,0.3);
+  border-radius: 4px;
+  padding: 1px 6px;
+  letter-spacing: 0.04em;
+}
+
+.nav-links {
+  display: flex; align-items: center; gap: 2rem;
+  list-style: none;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: var(--muted);
+  font-size: 0.9rem;
+  letter-spacing: 0.04em;
+  transition: color 0.2s;
+}
+
+.nav-links a:hover { color: var(--cream); }
+
+.nav-github {
+  display: flex; align-items: center; gap: 0.4rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.78rem !important;
+  color: var(--gold) !important;
+  border: 1px solid rgba(200,146,42,0.35);
+  padding: 5px 12px;
+  border-radius: 5px;
+  transition: background 0.2s, color 0.2s !important;
+}
+
+.nav-github:hover {
+  background: rgba(200,146,42,0.12);
+  color: var(--gold-light) !important;
+}
+
+/* ── SECTIONS ─────────────────────────────────────────────── */
+section { position: relative; z-index: 1; }
+
+/* ── HERO ─────────────────────────────────────────────────── */
+.hero {
+  min-height: 100vh;
+  display: flex; flex-direction: column;
+  justify-content: center; align-items: flex-start;
+  padding: 8rem 10% 5rem;
+  position: relative;
+}
+
+.hero-eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 1.5rem;
+  display: flex; align-items: center; gap: 0.75rem;
+}
+
+.hero-eyebrow::before {
+  content: '';
+  display: inline-block;
+  width: 36px; height: 1px;
+  background: var(--gold);
+  opacity: 0.7;
+}
+
+.hero h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(3rem, 7vw, 5.5rem);
+  font-weight: 700;
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+  color: var(--parchment);
+  max-width: 700px;
+  margin-bottom: 1.5rem;
+}
+
+.hero h1 em {
+  font-style: italic;
+  color: var(--gold-light);
+}
+
+.hero-sub {
+  max-width: 520px;
+  font-size: 1.05rem;
+  color: var(--muted);
+  line-height: 1.8;
+  margin-bottom: 3rem;
+}
+
+.hero-actions {
+  display: flex; gap: 1rem; flex-wrap: wrap;
+}
+
+.btn-primary {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  background: var(--gold);
+  color: var(--ink);
+  text-decoration: none;
+  font-family: 'Source Serif 4', serif;
+  font-size: 0.92rem;
+  font-weight: 400;
+  letter-spacing: 0.03em;
+  padding: 0.75rem 1.75rem;
+  border-radius: 5px;
+  transition: background 0.2s, transform 0.15s;
+}
+
+.btn-primary:hover {
+  background: var(--gold-light);
+  transform: translateY(-1px);
+}
+
+.btn-secondary {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  background: transparent;
+  color: var(--cream);
+  text-decoration: none;
+  font-family: 'Source Serif 4', serif;
+  font-size: 0.92rem;
+  letter-spacing: 0.03em;
+  padding: 0.75rem 1.75rem;
+  border-radius: 5px;
+  border: 1px solid rgba(240,230,204,0.2);
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.btn-secondary:hover {
+  border-color: rgba(240,230,204,0.5);
+  background: rgba(240,230,204,0.04);
+}
+
+.hero-stat-row {
+  position: absolute;
+  bottom: 4rem; left: 10%;
+  display: flex; gap: 3rem;
+}
+
+.stat-item {
+  display: flex; flex-direction: column; gap: 0.15rem;
+}
+
+.stat-number {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--gold-light);
+}
+
+.stat-label {
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* ── DIVIDER ──────────────────────────────────────────────── */
+.divider {
+  width: 100%; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold) 20%, var(--gold) 80%, transparent);
+  opacity: 0.18;
+  margin: 0;
+}
+
+/* ── FEATURES ─────────────────────────────────────────────── */
+.features {
+  padding: 7rem 10%;
+}
+
+.section-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 1rem;
+}
+
+.section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+  font-weight: 500;
+  color: var(--parchment);
+  line-height: 1.2;
+  margin-bottom: 4rem;
+  max-width: 480px;
+}
+
+.section-title em {
+  font-style: italic;
+  color: var(--gold-light);
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1.5px;
+  background: var(--line);
+  border: 1px solid var(--line);
+}
+
+.feature-card {
+  background: var(--ink);
+  padding: 2.25rem 2rem;
+  transition: background 0.25s;
+}
+
+.feature-card:hover {
+  background: rgba(200,146,42,0.05);
+}
+
+.feature-icon {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  display: block;
+}
+
+.feature-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--parchment);
+  margin-bottom: 0.6rem;
+  letter-spacing: 0.01em;
+}
+
+.feature-desc {
+  font-size: 0.88rem;
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+/* ── CHANGELOG ────────────────────────────────────────────── */
+.changelog {
+  padding: 7rem 10%;
+  background: rgba(255,240,210,0.018);
+}
+
+.releases {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  border-left: 1px solid rgba(200,146,42,0.25);
+  margin-top: 1rem;
+}
+
+.release-item {
+  display: grid;
+  grid-template-columns: 160px 1fr;
+  gap: 2rem;
+  padding: 2.5rem 0 2.5rem 2.5rem;
+  border-bottom: 1px solid rgba(200,146,42,0.1);
+  position: relative;
+  transition: background 0.2s;
+}
+
+.release-item:hover {
+  background: rgba(200,146,42,0.03);
+}
+
+.release-item::before {
+  content: '';
+  position: absolute;
+  left: -5px; top: 3rem;
+  width: 9px; height: 9px;
+  border-radius: 50%;
+  background: var(--ink);
+  border: 2px solid var(--gold);
+  transition: background 0.2s;
+}
+
+.release-item:hover::before {
+  background: var(--gold);
+}
+
+.release-item.latest::before {
+  background: var(--gold);
+  box-shadow: 0 0 10px rgba(200,146,42,0.5);
+}
+
+.release-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  padding-top: 0.1rem;
+}
+
+.release-version {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--gold);
+}
+
+.release-date {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  color: var(--muted);
+  letter-spacing: 0.06em;
+}
+
+.release-badge {
+  display: inline-block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 2px 7px;
+  border-radius: 3px;
+}
+
+.badge-latest {
+  background: rgba(200,146,42,0.2);
+  color: var(--gold-light);
+  border: 1px solid rgba(200,146,42,0.35);
+}
+
+.badge-stable {
+  background: rgba(100,140,80,0.12);
+  color: #8fbf72;
+  border: 1px solid rgba(100,140,80,0.25);
+}
+
+.badge-patch {
+  background: rgba(80,120,180,0.1);
+  color: #7aaae0;
+  border: 1px solid rgba(80,120,180,0.22);
+}
+
+.release-content h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.15rem;
+  font-weight: 500;
+  color: var(--parchment);
+  margin-bottom: 0.75rem;
+}
+
+.release-notes {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.release-notes li {
+  font-size: 0.88rem;
+  color: var(--muted);
+  display: flex; align-items: baseline; gap: 0.5rem;
+}
+
+.release-notes li::before {
+  content: '—';
+  color: var(--gold);
+  opacity: 0.5;
+  flex-shrink: 0;
+}
+
+.release-link {
+  display: inline-flex; align-items: center; gap: 0.35rem;
+  margin-top: 1.1rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  color: var(--gold);
+  text-decoration: none;
+  letter-spacing: 0.05em;
+  border-bottom: 1px solid rgba(200,146,42,0.3);
+  padding-bottom: 1px;
+  transition: border-color 0.2s, color 0.2s;
+}
+
+.release-link:hover {
+  color: var(--gold-light);
+  border-color: var(--gold-light);
+}
+
+/* ── CITATION ─────────────────────────────────────────────── */
+.citation {
+  padding: 7rem 10%;
+}
+
+.cite-card {
+  border: 1px solid var(--line);
+  padding: 2.75rem 3rem;
+  background: rgba(255,240,210,0.025);
+  max-width: 760px;
+}
+
+.cite-intro {
+  font-size: 0.92rem;
+  color: var(--muted);
+  margin-bottom: 1.5rem;
+  line-height: 1.75;
+}
+
+.cite-intro strong {
+  color: var(--cream);
+  font-weight: 400;
+}
+
+.bibtex {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.78rem;
+  line-height: 1.9;
+  color: #c5b99a;
+  background: rgba(0,0,0,0.3);
+  border: 1px solid rgba(200,146,42,0.12);
+  padding: 1.5rem 1.75rem;
+  border-radius: 4px;
+  overflow-x: auto;
+  white-space: pre;
+  position: relative;
+}
+
+.bibtex .kw  { color: var(--gold); }
+.bibtex .val { color: #a8d8b0; }
+
+.copy-btn {
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  margin-top: 1rem;
+  background: transparent;
+  border: 1px solid rgba(200,146,42,0.3);
+  color: var(--gold);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.06em;
+  padding: 5px 14px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.copy-btn:hover {
+  background: rgba(200,146,42,0.12);
+  color: var(--gold-light);
+}
+
+/* ── INSTALL ──────────────────────────────────────────────── */
+.install {
+  padding: 7rem 10%;
+  background: rgba(255,240,210,0.018);
+}
+
+.install-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: start;
+}
+
+.install-text p {
+  font-size: 0.95rem;
+  color: var(--muted);
+  line-height: 1.8;
+  margin-top: 1rem;
+}
+
+.install-text a {
+  color: var(--gold);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(200,146,42,0.3);
+}
+
+.install-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.step {
+  display: flex; gap: 1.2rem; align-items: flex-start;
+}
+
+.step-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  color: var(--gold);
+  background: rgba(200,146,42,0.1);
+  border: 1px solid rgba(200,146,42,0.25);
+  width: 26px; height: 26px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  margin-top: 0.05rem;
+}
+
+.step-text {
+  font-size: 0.88rem;
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+.step-text strong {
+  color: var(--cream);
+  font-weight: 400;
+  display: block;
+  margin-bottom: 0.15rem;
+}
+
+.cmd {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.78rem;
+  background: rgba(0,0,0,0.35);
+  border: 1px solid rgba(200,146,42,0.15);
+  color: var(--gold-light);
+  padding: 0.5rem 0.8rem;
+  border-radius: 4px;
+  display: block;
+  margin-top: 0.4rem;
+}
+
+/* ── FOOTER ───────────────────────────────────────────────── */
+footer {
+  position: relative; z-index: 1;
+  border-top: 1px solid var(--line);
+  padding: 3.5rem 10%;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 2rem;
+}
+
+.footer-brand {
+  display: flex; flex-direction: column; gap: 0.5rem;
+}
+
+.footer-brand-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.1rem;
+  color: var(--parchment);
+}
+
+.footer-brand-inst {
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.footer-links {
+  display: flex; gap: 3rem; flex-wrap: wrap;
+}
+
+.footer-col h4 {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 0.75rem;
+}
+
+.footer-col a {
+  display: block;
+  font-size: 0.85rem;
+  color: var(--muted);
+  text-decoration: none;
+  margin-bottom: 0.45rem;
+  transition: color 0.2s;
+}
+
+.footer-col a:hover { color: var(--cream); }
+
+.footer-bottom {
+  border-top: 1px solid var(--line);
+  padding: 1.5rem 10%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.68rem;
+  color: var(--muted);
+  letter-spacing: 0.04em;
+  flex-wrap: wrap; gap: 0.5rem;
+}
+
+.footer-bottom a {
+  color: var(--muted);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: color 0.2s, border-color 0.2s;
+}
+
+.footer-bottom a:hover {
+  color: var(--gold);
+  border-color: var(--gold);
+}
+
+/* ── ENTRANCE ANIMATIONS ──────────────────────────────────── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(22px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.hero-eyebrow { animation: fadeUp 0.6s ease both; }
+.hero h1      { animation: fadeUp 0.6s 0.1s ease both; }
+.hero-sub     { animation: fadeUp 0.6s 0.2s ease both; }
+.hero-actions { animation: fadeUp 0.6s 0.3s ease both; }
+.hero-stat-row{ animation: fadeUp 0.6s 0.45s ease both; }
+
+/* ── RESPONSIVE ───────────────────────────────────────────── */
+@media (max-width: 768px) {
+  nav { padding: 0 1.5rem; }
+  .nav-links { display: none; }
+  .hero { padding: 8rem 6% 5rem; }
+  .hero-stat-row { left: 6%; gap: 1.75rem; }
+  .features, .changelog, .citation, .install { padding: 5rem 6%; }
+  .install-inner { grid-template-columns: 1fr; gap: 2.5rem; }
+  .release-item { grid-template-columns: 1fr; gap: 0.5rem; }
+  .release-meta { flex-direction: row; flex-wrap: wrap; align-items: center; gap: 0.6rem; }
+  footer { padding: 3rem 6%; }
+  .footer-bottom { padding: 1.5rem 6%; }
+  .cite-card { padding: 2rem 1.75rem; }
+}
+</style>
 </head>
+
 <body>
-  <main>
-    <h1>CorBas — Updates & Changelog</h1>
-    <p>This site contains release notes, changelogs and documentation pointers for <strong>CorBas</strong>.</p>
-    <section>
-      <h2>Latest</h2>
-      <p>See the repository README and Releases for the latest changes.</p>
-    </section>
-  </main>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-brand">
+    <div class="nav-logo">CB</div>
+    <span class="nav-name">CorBas</span>
+    <span class="nav-version">v1.2.3</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#features">Features</a></li>
+    <li><a href="#changelog">Changelog</a></li>
+    <li><a href="#install">Install</a></li>
+    <li><a href="#citation">Cite</a></li>
+    <li>
+      <a href="https://github.com/mhdy54370-hub/CorBas-updates" class="nav-github" target="_blank" rel="noopener">
+        ⬡ GitHub
+      </a>
+    </li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <span class="hero-eyebrow">University of Basra · Department of English</span>
+  <h1>Corpus Analysis,<br/><em>Refined.</em></h1>
+  <p class="hero-sub">
+    CorBas is a desktop corpus analysis application built for researchers, linguists, and
+    students — combining frequency analysis, concordance, lexicogrammatical dispersion,
+    and D3.js visualizations in a single scholarly instrument.
+  </p>
+  <div class="hero-actions">
+    <a href="https://github.com/mhdy54370-hub/CorBas-updates/releases/latest" class="btn-primary">
+      ↓ &ensp;Download Latest Release
+    </a>
+    <a href="#changelog" class="btn-secondary">
+      View Changelog →
+    </a>
+  </div>
+  <div class="hero-stat-row">
+    <div class="stat-item">
+      <span class="stat-number">v1.2.3</span>
+      <span class="stat-label">Current Release</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-number">5</span>
+      <span class="stat-label">Total Releases</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-number">3</span>
+      <span class="stat-label">Stars on GitHub</span>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- FEATURES -->
+<section class="features" id="features">
+  <div class="section-label">Capabilities</div>
+  <h2 class="section-title">Every tool a<br/><em>corpus linguist</em> needs.</h2>
+
+  <div class="features-grid">
+    <div class="feature-card">
+      <span class="feature-icon">⟁</span>
+      <div class="feature-title">Frequency Analysis</div>
+      <p class="feature-desc">Full word frequency tables with type/token ratios, sortable by raw count, lemma, or POS category.</p>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">◈</span>
+      <div class="feature-title">Concordance (KWIC)</div>
+      <p class="feature-desc">Keyword-in-context concordance lines with adjustable span width and context export to Word or PDF.</p>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">◎</span>
+      <div class="feature-title">Lexicogrammatical Dispersion</div>
+      <p class="feature-desc">Juilland's D and Gries' DP dispersion metrics computed across POS tags, lemmas, and phrases — a CorBas-original measure.</p>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">⬡</span>
+      <div class="feature-title">Collocation Networks</div>
+      <p class="feature-desc">D3.js force-directed collocation graphs with MI-score and T-score weighting, spectral color coding, and zoom controls.</p>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">◻</span>
+      <div class="feature-title">Semantic Tagging</div>
+      <p class="feature-desc">Integrated PyMUSAS USAS semantic tagger alongside spaCy POS and dependency parsing pipelines.</p>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">⬤</span>
+      <div class="feature-title">Exportable Results</div>
+      <p class="feature-desc">Export annotated PDFs with highlights, Excel frequency tables, and Word concordance reports in one click.</p>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- CHANGELOG -->
+<section class="changelog" id="changelog">
+  <div class="section-label">Release History</div>
+  <h2 class="section-title">What's <em>changed.</em></h2>
+
+  <div class="releases">
+
+    <div class="release-item latest">
+      <div class="release-meta">
+        <span class="release-version">v1.2.3</span>
+        <span class="release-badge badge-latest">Latest</span>
+        <span class="release-date">02 May 2026</span>
+      </div>
+      <div class="release-content">
+        <h3>Patch — Stability &amp; Export Fixes</h3>
+        <ul class="release-notes">
+          <li>Fixed PDF export crash on corpora larger than 50k tokens</li>
+          <li>Improved D3.js collocation graph render performance</li>
+          <li>Corrected Gries' DP calculation for single-part corpora</li>
+          <li>Minor UI alignment fixes in dispersion panel</li>
+        </ul>
+        <a href="https://github.com/mhdy54370-hub/CorBas-updates/releases/tag/v1.2.3" class="release-link" target="_blank" rel="noopener">
+          Full release notes ↗
+        </a>
+      </div>
+    </div>
+
+    <div class="release-item">
+      <div class="release-meta">
+        <span class="release-version">v1.2.1</span>
+        <span class="release-badge badge-stable">Stable</span>
+        <span class="release-date">2026</span>
+      </div>
+      <div class="release-content">
+        <h3>Lexicogrammatical Dispersion Module</h3>
+        <ul class="release-notes">
+          <li>Introduced CorBas-original lexicogrammatical dispersion measure</li>
+          <li>Juilland's D and Gries' DP across POS tags, lemmas, and phrases</li>
+          <li>New institutional validation by University of Basra</li>
+          <li>PyMUSAS integration validated at v0.4.0</li>
+        </ul>
+        <a href="https://github.com/mhdy54370-hub/CorBas-updates/releases" class="release-link" target="_blank" rel="noopener">
+          View on GitHub ↗
+        </a>
+      </div>
+    </div>
+
+    <div class="release-item">
+      <div class="release-meta">
+        <span class="release-version">v1.1.x</span>
+        <span class="release-badge badge-patch">Archive</span>
+        <span class="release-date">Earlier 2026</span>
+      </div>
+      <div class="release-content">
+        <h3>Collocation Networks &amp; Visualisation</h3>
+        <ul class="release-notes">
+          <li>D3.js force-directed collocation network with MI/T-score weighting</li>
+          <li>Spectral color-coded edge strength visualization</li>
+          <li>Public Flask backend on Hugging Face Spaces</li>
+          <li>PDF cleaning tools via PyMuPDF</li>
+        </ul>
+        <a href="https://github.com/mhdy54370-hub/CorBas-updates/releases" class="release-link" target="_blank" rel="noopener">
+          View all releases ↗
+        </a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- INSTALL -->
+<section class="install" id="install">
+  <div class="section-label">Getting Started</div>
+  <div class="install-inner">
+    <div class="install-text">
+      <h2 class="section-title" style="margin-bottom:1rem;">Install on <em>Windows.</em></h2>
+      <p>CorBas is distributed as a standalone Windows desktop application. No Python installation required — the runtime is bundled in the release package.</p>
+      <br/>
+      <p>A <strong>web-based version</strong> is under development and will be linked here when available. For academic inquiries or institutional licensing, contact
+        <a href="mailto:corbas2026@gmail.com">corbas2026@gmail.com</a>.
+      </p>
+    </div>
+    <div class="install-steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-text">
+          <strong>Download the latest release</strong>
+          Visit the GitHub Releases page and download the <code style="font-family:'JetBrains Mono',monospace;font-size:0.8em;color:var(--gold-light)">.zip</code> or installer for your system.
+          <span class="cmd">github.com/mhdy54370-hub/CorBas-updates/releases</span>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-text">
+          <strong>Extract &amp; Launch</strong>
+          Extract the archive, open the folder, and double-click <code style="font-family:'JetBrains Mono',monospace;font-size:0.8em;color:var(--gold-light)">CorBas.exe</code>.
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-text">
+          <strong>Load your corpus</strong>
+          Use the Upload Corpus panel to load plain text (<code style="font-family:'JetBrains Mono',monospace;font-size:0.8em;color:var(--gold-light)">.txt</code>) or PDF files and begin analysis.
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-text">
+          <strong>Select an analysis tool</strong>
+          Navigate the left panel to choose Frequency, Concordance, Dispersion, Collocations, or Semantic Tagging.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- CITATION -->
+<section class="citation" id="citation">
+  <div class="section-label">Academic Use</div>
+  <h2 class="section-title">Citing <em>CorBas.</em></h2>
+
+  <div class="cite-card">
+    <p class="cite-intro">
+      If CorBas contributed to your research, please cite it using the reference below.
+      The tool is developed as part of doctoral research at the
+      <strong>University of Basra, Department of English</strong>.
+    </p>
+    <div class="bibtex" id="bibtex-block"><span class="kw">@software</span>{Mohsen_CorBas_2026,
+  <span class="kw">author</span>    = {<span class="val">Mohsen, Muhammad Hussein Mahdi</span>},
+  <span class="kw">title</span>     = {<span class="val">CorBas: A Desktop Corpus Analysis Application</span>},
+  <span class="kw">year</span>      = {<span class="val">2026</span>},
+  <span class="kw">version</span>   = {<span class="val">1.2.3</span>},
+  <span class="kw">institution</span>= {<span class="val">University of Basra, Department of English</span>},
+  <span class="kw">url</span>       = {<span class="val">https://github.com/mhdy54370-hub/CorBas-updates</span>}
+}</div>
+    <button class="copy-btn" onclick="copyBibtex()">⎘ &ensp;Copy BibTeX</button>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-brand">
+    <span class="footer-brand-name">CorBas</span>
+    <span class="footer-brand-inst">University of Basra — Department of English</span>
+    <span class="footer-brand-inst" style="margin-top:0.2rem;">Muhammad Hussein Mahdi Mohsen</span>
+  </div>
+  <div class="footer-links">
+    <div class="footer-col">
+      <h4>Tool</h4>
+      <a href="#features">Features</a>
+      <a href="#changelog">Changelog</a>
+      <a href="#install">Installation</a>
+    </div>
+    <div class="footer-col">
+      <h4>Research</h4>
+      <a href="#citation">Cite CorBas</a>
+      <a href="mailto:corbas2026@gmail.com">Contact</a>
+    </div>
+    <div class="footer-col">
+      <h4>Links</h4>
+      <a href="https://github.com/mhdy54370-hub/CorBas-updates" target="_blank" rel="noopener">GitHub Repository</a>
+      <a href="https://github.com/mhdy54370-hub/CorBas-updates/releases" target="_blank" rel="noopener">All Releases</a>
+    </div>
+  </div>
+</footer>
+<div class="footer-bottom">
+  <span>© 2026 Muhammad Hussein Mahdi Mohsen — University of Basra</span>
+  <span>Built with CorBas-updates · <a href="https://pages.github.com" target="_blank" rel="noopener">GitHub Pages</a></span>
+</div>
+
+<script>
+function copyBibtex() {
+  const raw = `@software{Mohsen_CorBas_2026,
+  author     = {Mohsen, Muhammad Hussein Mahdi},
+  title      = {CorBas: A Desktop Corpus Analysis Application},
+  year       = {2026},
+  version    = {1.2.3},
+  institution= {University of Basra, Department of English},
+  url        = {https://github.com/mhdy54370-hub/CorBas-updates}
+}`;
+  navigator.clipboard.writeText(raw).then(() => {
+    const btn = document.querySelector('.copy-btn');
+    btn.textContent = '✓  Copied!';
+    setTimeout(() => { btn.innerHTML = '⎘ &ensp;Copy BibTeX'; }, 2000);
+  });
+}
+</script>
+
 </body>
 </html>
