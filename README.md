@@ -25,8 +25,8 @@ https://github.com/mhdy54370-hub/CorBas-updates/releases
 ## Notes
 This repository contains the **desktop (Windows) version** of CorBas.
 
-If you prefer not to install the desktop version, you may use the **web-based version** of CorBas here:
-(coming soon)
+If you prefer not to install the desktop version, you may use the **web-based version** of CorBas here: 
+https://mhmmohsen1-corbas-frontend.hf.space/
 
 ## Contact
 For questions, feedback, or academic inquiries, please contact:
